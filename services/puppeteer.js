@@ -13,7 +13,7 @@ function sleep(ms) {
         let queryToFindUser = `SELECT * from users`;
         connection.query(queryToFindUser, async function (err, data) {
             if (data && data.length) {
-                data = data.splice(0, 100)
+                data = data.splice(0, 1000)
 
                 for (let user of data) {
                     const browser = await puppeteer.launch({ headless: true, args: ["--disable-notifications"] });

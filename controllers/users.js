@@ -12,7 +12,7 @@ let exportUserDetails = async (req, res, next) => {
 
                 let userIds = userData.map(u => u.id);
                 let useridQuotationRemoved = "'" + userIds.join("','") + "'";
-
+                console.log(useridQuotationRemoved);
                 let queryToGetTimeStamp = `SELECT AVG(timestamp/1000) AS averageLoadingTime, MAX(timestamp/1000) AS maxLoadingTime, MIN(timestamp/1000) AS minLoadingTime, pagelink, count(*) as count from pagelinks where userid IN (${useridQuotationRemoved}) group by pagelink`;
                 connection.query(queryToGetTimeStamp, async function (err, pageData) {
                     if (err) {
