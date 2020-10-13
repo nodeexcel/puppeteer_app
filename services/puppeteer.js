@@ -13,7 +13,7 @@ function sleep(ms) {
         let queryToFindUser = `SELECT * from users`;
         connection.query(queryToFindUser, async function (err, data) {
             if (data && data.length) {
-                data = data.splice(0, 10)
+                data = data.splice(0, 100)
 
                 for (let user of data) {
                     const browser = await puppeteer.launch({ headless: true, args: ["--disable-notifications"] });
@@ -28,10 +28,11 @@ function sleep(ms) {
                     const selector = '.expo > a'
                     await page.waitForSelector(selector)
                     const links = await page.$$eval(selector, am => am.filter(e => e.href).map(e => e.href))
-                    console.log(links);
+                    console.log(links.length);
 
                     recurssiveFunction(links, page, user, (err, data) => { });
                 }
+                connection.release();
             } else {
                 let queryToInsertUser = `INSERT INTO users (id, email) VALUES `;
 
@@ -43,7 +44,9 @@ function sleep(ms) {
                         queryToInsertUser += `('${uuid()}', '${email}'),`
                     }
                 }
-                connection.query(queryToInsertUser, async function (err, data) { })
+                connection.query(queryToInsertUser, async function (err, data) {
+                    connection.release();
+                })
             }
         })
     })
@@ -57,14 +60,15 @@ async function recurssiveFunction(links, page, user, callback) {
     }, 3660000);
 
     for (let i = 0; i < links.length; i++) {
-        console.log(links[0]);
-        await page.goto(links[0], { waitUntil: 'networkidle2' });
+        console.log(links[i]);
+        await page.goto(links[i], { waitUntil: 'networkidle2' });
         let gitMetrics = await page.metrics();
 
-        let insertUsersPageDetails = `INSERT INTO pagelinks (id, userid, pagelink, timestamp, email) VALUES ('${uuid()}', '${user.id}', '${links[0]}', '${gitMetrics.Timestamp}', '${user.email}')`
+        let insertUsersPageDetails = `INSERT INTO pagelinks (id, userid, pagelink, timestamp, email) VALUES ('${uuid()}', '${user.id}', '${links[i]}', '${gitMetrics.Timestamp}', '${user.email}')`
         conn.getConnection(async function (err, connection) {
             connection.query(insertUsersPageDetails, async function (err, data) {
                 console.log(user.email);
+                connection.release();
             })
         })
 
