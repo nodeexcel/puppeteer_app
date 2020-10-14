@@ -1,0 +1,21 @@
+{
+  "name": "puppeteer_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --optimize_for_size --max-old-space-size=8192 --stack-size=65500 app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "json2csv": "^5.0.3",
+    "mysql": "^2.18.1",
+    "puppeteer": "^1.7.0",
+    "uuidv4": "^6.2.4"
+  }
+}

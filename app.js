@@ -1,7 +1,6 @@
 const puppeteer = require('puppeteer');
 const conn = require('./connection');
 require('dotenv').config()
-const { uuid } = require('uuidv4');
 const express = require('express');
 const bodyParser = require('body-parser');
 const user = require('./routers/users');
