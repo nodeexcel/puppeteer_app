@@ -18,7 +18,7 @@ function sleep(ms) {
                 for (let user of data) {
                     const browser = await puppeteer.launch({ headless: true, args: ["--disable-notifications"] });
                     const page = await browser.newPage();
-                    await page.goto('http://company1.platoo.in/');
+                    await page.goto('https://company1.platoo-platform.com');
                     await page.focus('.form-group input[name=email]')
                     await page.keyboard.type(`${user.email}`)
                     await page.focus('.form-group input[name=password]')
@@ -28,7 +28,7 @@ function sleep(ms) {
                     const selector = '.expo > a'
                     await page.waitForSelector(selector)
                     const links = await page.$$eval(selector, am => am.filter(e => e.href).map(e => e.href))
-                    console.log(links.length);
+                    console.log(links.length,'**********',user.email);
 
                     recurssiveFunction(links, page, user, (err, data) => { });
                 }
@@ -57,7 +57,7 @@ async function recurssiveFunction(links, page, user, callback) {
     setTimeout(function () {
         exit = true;
         callback(null, "DDDDDDDDDDOOOOOOOOOOONNNNNNNNNNNEEEEEEEEEEE");
-    }, 3660000);
+    }, 3600000);
 
     for (let i = 0; i < links.length; i++) {
         console.log(links[i]);
